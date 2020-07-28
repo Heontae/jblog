@@ -23,7 +23,7 @@
 			<ul id="admin-menu" class="clearfix">
 				<li class="tabbtn"><a href="${pageContext.request.contextPath}/${session.id }/admin/basic">기본설정</a></li>
 				<li class="tabbtn selected"><a href="${pageContext.request.contextPath}/${session.id }/admin/category">카테고리</a></li>
-				<li class="tabbtn"><a href="${pageContext.request.contextPath}/${session.id }/admin/write">글작성</a></li>
+				<li class="tabbtn"><a href="${pageContext.request.contextPath}/${session.id }/admin/writeForm">글작성</a></li>
 			</ul>
 			<!-- //admin-menu -->
 			
@@ -86,12 +86,78 @@
 </body>
 
 <script type="text/javascript">
+
+//화면 키면실행
 $(document).ready(function(){
 	
 	fetchList();
 	
 });
 
+$("#cateList").on("click","img",function(){
+	console.log("삭제버튼클릭");
+	
+	var delNo = $(this).data("delno");
+	
+	if($(this).data("count")==0){
+		$.ajax({
+			
+			url : "${pageContext.request.contextPath }/${session.id}/admin/delete",		
+			type : "post",
+			//contentType : "application/json",
+			data : {cateNo: 	 delNo},
+
+			dataType : "json",
+			success : function(count){
+				/*성공시 처리해야될 코드 작성*/
+				
+				$("#cateList tr[data-delNo='"+ delNo +"']" ).remove();
+				
+			},
+			error : function(XHR, status, error) {
+				console.error(status + " : " + error);
+			}
+		});
+	}
+	else{
+		alert("삭제할 수 없습니다.");
+	}
+	
+	
+})
+
+//카테고리 추가버튼 누르면 추가
+$("#btnAddCate").on("click",function(){
+	//이벤트체크
+	console.log("카테고리추가버튼 클릭");
+	event.preventDefault();
+	
+	//데이터 수집
+	var name = $("[name=name]").val();
+	var desc = $("[name=desc]").val();
+	//데이터전송
+	$.ajax({
+		
+		url : "${pageContext.request.contextPath }/${session.id}/admin/cateListAdd",		
+		type : "post",
+		//contentType : "application/json",
+		data : {
+			cateName: 	 name,
+			description: desc
+		},
+
+		dataType : "json",
+		success : function(cateVo){
+			/*성공시 처리해야될 코드 작성*/
+			render(cateVo, "up")
+			$("[name=name]").val("");
+			$("[name=desc]").val("");
+		},
+		error : function(XHR, status, error) {
+			console.error(status + " : " + error);
+		}
+	});
+})
 
 //전체리스트 불러오기
 function fetchList(){
@@ -104,7 +170,6 @@ function fetchList(){
 
 		dataType : "json",
 		success : function(cateList){
-			console.log(cateList);
 			/*성공시 처리해야될 코드 작성*/
 			for(var i=0; i<cateList.length; i++){
 				render(cateList[i],"down");				
@@ -115,16 +180,21 @@ function fetchList(){
 		}
 	});
 }
+
 //리스트 그리기(1개씩)
 function render(cateList, direction){
+	var count;
+	console.log(cateList.postCount);
+	cateList.postCount == null? count = 0 : count = cateList.postCount;
+	
 	var str = "";
-	str += "<tr>";
+	str += "<tr data-delNo='"+cateList.cateNo+"'>";
 	str += "	<td>"+cateList.cateNo+"</td>";
 	str += "	<td>"+cateList.cateName+"</td>";
-	str += "	<td>7</td>";
+	str += "	<td>"+count+"</td>";
 	str += "	<td>"+cateList.description+"</td>";
 	str += "	<td class='text-center'>";
-	str += "	<img class='btnCateDel' src='${pageContext.request.contextPath}/assets/images/delete.jpg'>";
+	str += "	<img class='btnCateDel' data-count='"+ count +"' data-delNo='" +cateList.cateNo+ "' src='${pageContext.request.contextPath}/assets/images/delete.jpg'>";
 	str += "	</td>";
 	str += "</tr>";
 

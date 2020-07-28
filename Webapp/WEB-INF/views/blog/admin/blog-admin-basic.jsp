@@ -21,7 +21,7 @@
 			<ul id="admin-menu" class="clearfix">
 				<li class="tabbtn selected"><a href="${pageContext.request.contextPath}/${session.id }/admin/basic">기본설정</a></li>
 				<li class="tabbtn"><a href="${pageContext.request.contextPath}/${session.id }/admin/category">카테고리</a></li>
-				<li class="tabbtn"><a href="${pageContext.request.contextPath}/${session.id }/admin/write">글작성</a></li>
+				<li class="tabbtn"><a href="${pageContext.request.contextPath}/${session.id }/admin/writeForm">글작성</a></li>
 			</ul>
 			<!-- //admin-menu -->
 			
@@ -38,7 +38,12 @@
 			      		</tr>
 			      		<tr>
 			      			<td><label>로고이미지</label></td>
-			      			<td class="text-left"><img src="${pageContext.request.contextPath}/assets/images/spring-logo.jpg"></td>   
+			      			<c:if test="${blogVo.logoFile == 'default'}">
+			      				<td class="text-left"><img src="${pageContext.request.contextPath}/assets/images/spring-logo.jpg"></td>   
+			      			</c:if>
+			      			<c:if test="${blogVo.logoFile != 'default'}">
+			      				<td class="text-left"><img src="${pageContext.request.contextPath}/upload/${blogVo.logoFile}"></td>
+			      			</c:if>
 			      		</tr>      		
 			      		<tr>
 			      			<td>&nbsp;</td>

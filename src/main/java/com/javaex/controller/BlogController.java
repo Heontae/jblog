@@ -1,16 +1,15 @@
 package com.javaex.controller;
 
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.multipart.MultipartFile;
 
 import com.javaex.service.BlogService;
-import com.javaex.vo.BlogVo;
 
 @Controller
 public class BlogController {
@@ -19,11 +18,17 @@ public class BlogController {
 	
 	//개인블로그 페이지
 	@RequestMapping("/{id}")
-	public String main(Model model ,@PathVariable("id") String id) {
+	public String main(Model model ,@PathVariable("id") String id,
+			@RequestParam(value = "cateNo", defaultValue = "0") int cateNo,
+			@RequestParam(value = "postNo", defaultValue = "0") int postNo) {
 		//정보 (id,blogTitle,logoFile)
 		model.addAttribute("blogVo", blogService.select(id));
 		//카테고리 리스트
 		model.addAttribute("cateList", blogService.categoryList(id));
+		//post 리스트
+		Map<String,Object> map = blogService.postList(id,cateNo,postNo);
+		model.addAttribute("map",map );
+		
 		return "blog/blog-main";
 	}
 	

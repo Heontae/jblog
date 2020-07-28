@@ -2,12 +2,17 @@ package com.javaex.vo;
 
 public class CategoryVo {
 	// 필드
-	private int cateNo;
+	private int cateNo,postCount;
 	private String id, cateName, description, regDate;
 
 	// 생성자
 	public CategoryVo() {
 
+	}
+
+	public CategoryVo(String id,int cateNo) {
+		this.id = id;
+		this.cateNo = cateNo;
 	}
 
 	public CategoryVo(int cateNo, String id, String cateName, String description, String regDate) {
@@ -59,11 +64,20 @@ public class CategoryVo {
 		this.regDate = regDate;
 	}
 
+	public int getPostCount() {
+		return postCount;
+	}
+
+	public void setPostCount(int postCount) {
+		this.postCount = postCount;
+	}
 	//일반 메소드
+
 	@Override
 	public String toString() {
-		return "CategoryVo [cateNo=" + cateNo + ", id=" + id + ", cateName=" + cateName + ", description=" + description
-				+ ", regDate=" + regDate + "]";
+		return "CategoryVo [cateNo=" + cateNo + ", postCount=" + postCount + ", id=" + id + ", cateName=" + cateName
+				+ ", description=" + description + ", regDate=" + regDate + "]";
 	}
+	
 	
 }

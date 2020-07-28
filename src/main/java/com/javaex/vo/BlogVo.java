@@ -2,7 +2,7 @@ package com.javaex.vo;
 
 public class BlogVo {
 	// 필드
-	private String id, blogTitle, logoFile;
+	private String id, blogTitle, logoFile, userName;
 
 	// 생성자
 	public BlogVo() {
@@ -39,6 +39,14 @@ public class BlogVo {
 
 	public void setLogoFile(String logoFile) {
 		this.logoFile = logoFile;
+	}
+
+	public String getUserName() {
+		return userName;
+	}
+
+	public void setUserName(String userName) {
+		this.userName = userName;
 	}
 
 	// 일반메소드

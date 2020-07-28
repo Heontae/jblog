@@ -6,11 +6,14 @@
 	<!-- 회원가입하기. -->
 	<select id="selectOne" parameterType="String" resultType="com.javaex.vo.BlogVo">
 		<![CDATA[
-			select 	id,
+			select 	b.id,
 					blogTitle,
-					logoFile 
-			from 	blog 
-			where 	id = #{id}
+					logoFile,
+					s.userName 
+			from 	blog b,
+					users s
+			where 	b.id = s.id
+			and		b.id = #{id}
 		]]>
 	</select>
 
@@ -21,7 +24,7 @@
 			set blogTitle = #{blogTitle},
 			    logoFile = #{logoFile}
 			where id=#{id} 
-		]]>
+		]]>	
 	</select>
 
 

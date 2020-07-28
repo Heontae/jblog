@@ -48,4 +48,15 @@
 			and  		password= #{password}
 		]]>
 	</select>
+	
+	<!-- 회원유무 검색. -->
+	<select id="userIdCheck" parameterType="String"
+		resultType="com.javaex.vo.UserVo">
+		<![CDATA[
+			SELECT		userNo,
+						id
+			FROM		users
+			where		id=#{id}
+		]]>
+	</select>
 </mapper>

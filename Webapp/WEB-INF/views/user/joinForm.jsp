@@ -7,7 +7,7 @@
 <meta charset="UTF-8">
 <title>JBlog</title>
 <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/jblog.css">
-
+<script type="text/javascript" src="${pageContext.request.contextPath}/assets/js/jquery/jquery-1.12.4.js"></script>
 </head>
 <body>
 	<div id="center-content">
@@ -31,7 +31,7 @@
 		      		</tr>
 		      		<tr>
 		      			<td></td>
-		      			<td id="tdMsg" colspan="2">사용할 수 있는 아이디 입니다.</td>
+		      			<td id="tdMsg" colspan="2"></td>
 		      		</tr> 
 		      		<tr>
 		      			<td><label for="txtPassword">패스워드</label> </td>
@@ -65,6 +65,35 @@
 	</div>
 
 </body>
+<script type="text/javascript">
+$("#btnIdCheck").on("click",function(){
+	var userId = $("#txtId").val();
+	console.log(userId);
+	
+	$.ajax({
+		
+		url : "${pageContext.request.contextPath }/user/idCheck",		
+		type : "post",
+		//contentType : "application/json",
+		data : {id: userId},
 
+		dataType : "json",
+		success : function(result){
+			/*성공시 처리해야될 코드 작성*/
+			if(result == true){
+				$("#tdMsg").text("사용할 수 있는 아이디 입니다.");
+			}
+			else{
+				$("#tdMsg").text("다른 아이디로 가입해 주세요.");
+			}
+		},
+		error : function(XHR, status, error) {
+			console.error(status + " : " + error);
+		}
+	});
+
+});
+
+</script>
 
 </html>

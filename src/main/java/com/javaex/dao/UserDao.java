@@ -27,4 +27,8 @@ public class UserDao {
 	public UserVo login(UserVo userVo) {
 		return sqlsession.selectOne("user.selectUser", userVo);
 	}
+	
+	public UserVo userIdCheck(String id) {
+		return sqlsession.selectOne("user.userIdCheck",id);
+	}
 }

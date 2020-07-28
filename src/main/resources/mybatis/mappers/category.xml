@@ -3,9 +3,52 @@
 
 <mapper namespace="category">
 
-	<!-- 회원가입하기. -->
+	<!-- 카테고리 리스트. -->
 	<select id="list" resultType="com.javaex.vo.CategoryVo"
 		parameterType="String">
+		<![CDATA[
+			SELECT
+			    c.cateno,
+			    c.catename,
+			    c.description,
+			    p.postcount
+			FROM
+			    category c,
+			    (SELECT
+			        cateno,
+			        count(postno) postcount
+			    FROM
+			        post
+			    group by 
+			    	cateno) p
+			where
+			    id = #{id}
+			and
+			    c.cateno = p.cateno(+)
+			order by
+				c.cateNo desc
+		]]>
+	</select>
+
+	<!-- 카테고리 추가. -->
+	<insert id="insertSelectKey" parameterType="com.javaex.vo.CategoryVo">
+	<selectKey keyProperty="cateNo" resultType="int" order="BEFORE">	
+		select seq_category_no.NEXTVAL from dual <!-- 시퀀스값을 no에 저장(BEFORE) -->
+	</selectKey>
+	<![CDATA[
+		INSERT INTO category VALUES (
+				#{cateNo},
+				#{id},
+				#{cateName},
+				#{description},
+				SYSDATE
+		)
+	]]>
+	</insert>
+	
+	<!-- 정보하나 가져오기. -->
+	<select id="SelectByNo" resultType="com.javaex.vo.CategoryVo"
+		parameterType="int">
 		<![CDATA[
 			select 	cateNo,
 					id,
@@ -13,9 +56,18 @@
 					description,
 					regDate
 			from 	category
-			where   id = #{id}
+			where   cateNo = #{cateNo}
 		]]>
 	</select>
+	
+	<!-- 카테고리 삭제. -->
+	<delete id="delete" parameterType="com.javaex.vo.CategoryVo">
+		<![CDATA[
+			DELETE FROM category
+			WHERE
+			    	cateNo = #{cateNo}
+			    and id=	#{id}
 
-
+		]]>
+	</delete>
 </mapper>

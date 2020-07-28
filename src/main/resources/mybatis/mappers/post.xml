@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="post">
+
+	<!-- 추가하기. -->
+	<insert id="insert" parameterType="com.javaex.vo.PostVo">
+		<![CDATA[
+			INSERT INTO post 
+			VALUES (
+				seq_post_no.NEXTVAL,
+				#{cateNo},
+				#{postTitle},
+				#{postContent},
+				sysdate
+			)
+
+		]]>
+	</insert>
+
+	<!-- 리스트. -->
+	<select id="List" parameterType="int"
+		resultType="com.javaex.vo.PostVo">
+		<![CDATA[
+			select 
+				postNo,
+				cateNo,
+				postTitle,
+				postContent,
+				to_char(regDate,'YYYY-MM-DD') as regDate
+			FROM
+				post
+			where
+				cateNo = #{cateNo}
+			order by
+				postNo desc
+		]]>
+	</select>
+
+	<!-- 유저정보1. -->
+	<select id="User" parameterType="int"
+		resultType="com.javaex.vo.PostVo">
+		<![CDATA[
+			select 
+				postNo,
+				cateNo,
+				postTitle,
+				postContent,
+				to_char(regDate,'YYYY-MM-DD') as regDate
+			FROM
+				post
+			where
+				postNo = #{postNo}
+			order by
+				postNo desc
+		]]>
+	</select>
+</mapper>

@@ -23,4 +23,16 @@ public class UserService {
 	
 		return userDao.login(userVo);
 	}
+	
+	public boolean userIdCheck(String id) {
+		UserVo userVo = userDao.userIdCheck(id);
+		boolean result = true;
+		if(userVo == null) {
+			result = true;
+		}
+		else {
+			result = false;
+		}
+		return result;
+	}
 }
